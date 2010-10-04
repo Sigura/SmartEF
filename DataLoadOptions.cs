@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,7 +10,15 @@ namespace SmartEF
 {
     public class DataLoadOptions
     {
-        private static readonly string[] ValidTypes = new[] { "ComplexObject ", "StructuralObject", "EntityObject", "EntityCollection`1" };
+        private static readonly Type[] ValidTypes =
+            new[]
+                {
+                    typeof(ComplexObject),
+                    typeof(StructuralObject),
+                    typeof(EntityObject),
+                    typeof(EntityCollection<>)
+                };
+
         private readonly Dictionary<MetaPosition, MemberInfo> _includes;
 
         public DataLoadOptions()
@@ -85,20 +94,19 @@ namespace SmartEF
 
         private static void ValidateMemberExpression(MemberExpression expression)
         {
-            if ((expression == null) || (expression.Expression.NodeType != ExpressionType.Parameter) || expression.Member.MemberType != MemberTypes.Property)
+            if ((expression == null) 
+                || (expression.Expression.NodeType != ExpressionType.Parameter) 
+                || expression.Member.MemberType != MemberTypes.Property
+                || !(expression.Member is PropertyInfo))
             {
                 throw new InvalidOperationException("The expression specified must be of the form p.A, where p is the parameter and A is a property member.");
             }
-            var member = expression.Member as PropertyInfo;
+            var propertyInfo = (PropertyInfo)expression.Member;
 
-            if (member == null)
-            {
-                throw new InvalidOperationException(String.Format("{0} must be property member", expression));
-            }
             //Member type must be EntityCollection<T> or StructuralObject
-            var isEntityCollection = ValidTypes.Any(s => s == member.PropertyType.Name);
-            var isEntity = member.PropertyType.BaseType != null &&
-                           ValidTypes.Any(s => s == member.PropertyType.BaseType.Name);
+            var isEntityCollection = ValidTypes.Any(s => s.Equals(propertyInfo.PropertyType));
+            var isEntity = propertyInfo.PropertyType.BaseType != null &&
+                           ValidTypes.Any(s => s.Equals(propertyInfo.PropertyType.BaseType));
 
             if (isEntity || isEntityCollection)
                 return;
