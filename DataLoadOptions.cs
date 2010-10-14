@@ -188,7 +188,7 @@ namespace SmartEF
                         p.PropertyType.GetGenericArguments().FirstOrDefault() == member.DeclaringType
                 );
 
-            return prop != null ? string.Format("{0}.{1}", member.DeclaringType.Name, member.Name) : null;
+            return prop != null ? string.Format("{0}.{1}", prop.Name, member.Name) : null;
         }
 
         public string ResolvePath<T>(MemberInfo member)
