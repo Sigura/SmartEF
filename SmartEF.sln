@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEF", "SEF.csproj", "{3E702365-354A-4664-8F06-3ECCD7EA4969}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEF", "SEF\SEF.csproj", "{3E702365-354A-4664-8F06-3ECCD7EA4969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEF.Contracts", "..\SEF.Contracts\SEF.Contracts.csproj", "{E8DF600E-A629-4839-96A0-1256706D6EF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEF.Contracts", "SEF.Contracts\SEF.Contracts.csproj", "{E8DF600E-A629-4839-96A0-1256706D6EF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
